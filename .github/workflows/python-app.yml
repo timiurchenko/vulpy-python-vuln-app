@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@master
 
       - name: Create virtual environment
         run: python -m venv snyk-venv
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@master
 
       - name: Create virtual environment
         run: python -m venv snyk-venv
@@ -59,7 +59,7 @@ jobs:
         run: pip3 install -r requirements.txt
   
       - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/python-3.7@master
+        uses: snyk/actions/python@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
@@ -83,6 +83,9 @@ jobs:
   SAST-2:  
       runs-on: ubuntu-latest
       steps:
+        - name: Checkout code
+          uses: actions/checkout@master 
+
         - name: Install Snyk
           run: npm install -g snyk
 
