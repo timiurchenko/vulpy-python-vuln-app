@@ -1,5 +1,6 @@
 name: Example workflow for Python using Snyk
 on: workflow_dispatch
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,13 +19,26 @@ jobs:
         run: |
           source .venv/bin/activate
           pytest
-          
+
   security:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create virtual environment
+        run: python -m venv snyk-venv
+
+      - name: Activate virtual environment
+        run: source snyk-venv/bin/activate
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install Snyk
+        run: npm install -g snyk
+
       - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/python-3.10@master
+        run: snyk test
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-  
