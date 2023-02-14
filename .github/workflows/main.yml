@@ -1,0 +1,95 @@
+name: Example of scanning a python app with snyk
+
+on: workflow_dispatch
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run tests
+        run: |
+          source .venv/bin/activate
+          pytest --collect-only
+
+  SCA-1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+
+      - name: Create virtual environment
+        run: python -m venv snyk-venv
+
+      - name: Activate virtual environment
+        run: source snyk-venv/bin/activate
+
+      - name: Install dependencies
+        run: pip3 install -r requirements.txt
+
+      - name: Install Snyk
+        run: npm install -g snyk
+
+      - name: Run Snyk to check for vulnerabilities
+        run: snyk test
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      
+  SCA-2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Create virtual environment
+        run: python -m venv snyk-venv
+
+      - name: Activate virtual environment
+        run: source snyk-venv/bin/activate
+
+      - name: Install dependencies
+        run: pip3 install -r requirements.txt
+  
+      - name: Run Snyk to check for vulnerabilities
+      - uses: snyk/actions/python@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --all-projects --severity-threshold=high
+     
+     
+          
+  SAST:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master    
+    
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/python@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --code
+          
+  SAST-2:  
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@master 
+
+        - name: Install Snyk
+          run: npm install -g snyk
+
+        - name: Run Snyk Code to check for vulnerabilities
+          run: snyk test --code
+          env:
+            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
