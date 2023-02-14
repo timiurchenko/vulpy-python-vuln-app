@@ -36,7 +36,7 @@ jobs:
         run: pip3 install -r requirements.txt
 
       - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/python-3.10@master
+        uses: snyk/actions/python@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
@@ -55,11 +55,18 @@ jobs:
   SAST:
     runs-on: ubuntu-latest
     steps:
-
-      - name: Install Snyk
-        run: npm install -g snyk
-
-      - name: Run Snyk Code to check for vulnerabilities
-        run: snyk test --code
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/python@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --code
+          
+          
+     # - name: Install Snyk
+    #    run: npm install -g snyk
+
+     # - name: Run Snyk Code to check for vulnerabilities
+    #    run: snyk test --code
+    #    env:
+     #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
