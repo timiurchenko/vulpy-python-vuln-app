@@ -33,11 +33,10 @@ jobs:
         run: source snyk-venv/bin/activate
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip3 install -r requirements.txt
 
-      - uses: actions/checkout@master
       - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/python@master
+        uses: snyk/actions/python-3.10@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
@@ -61,6 +60,6 @@ jobs:
         run: npm install -g snyk
 
       - name: Run Snyk Code to check for vulnerabilities
-        run: snyk code test
+        run: snyk test --code
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
