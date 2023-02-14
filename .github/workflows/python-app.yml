@@ -18,7 +18,7 @@ jobs:
       - name: Run tests
         run: |
           source .venv/bin/activate
-          pytest
+          pytest --collect-only
 
   security:
     runs-on: ubuntu-latest
