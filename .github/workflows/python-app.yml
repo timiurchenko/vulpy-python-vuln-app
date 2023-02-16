@@ -42,24 +42,33 @@ jobs:
         run: snyk test
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-          
+      
   SCA-2:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@master
+      - uses: actions/checkout@master
 
       - name: Create virtual environment
         run: python -m venv snyk-venv
 
       - name: Activate virtual environment
         run: source snyk-venv/bin/activate
-
+        
+      - uses: snyk/actions/setup@master
       - name: Install dependencies
         run: pip3 install -r requirements.txt
   
-
-                 
+      - name: Test dependencies with Snyk
+        run: snyk test
+        env:
+          SNYK_TOKEN: ${{secrets.SNYK_TOKEN}}
+      - name: Monitor dependencies for security issues with Snyk
+        run: snyk monitor
+        env:
+          SNYK_TOKEN: ${{secrets.SNYK_TOKEN}}
+     
+     
+          
   SAST:
     runs-on: ubuntu-latest
     steps:
