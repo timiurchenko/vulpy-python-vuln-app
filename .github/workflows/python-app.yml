@@ -58,12 +58,7 @@ jobs:
       - name: Install dependencies
         run: pip3 install -r requirements.txt
   
-      - name: Run Snyk to check for vulnerabilities
-      - uses: snyk/actions/python@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --all-projects
+
                  
   SAST:
     runs-on: ubuntu-latest
