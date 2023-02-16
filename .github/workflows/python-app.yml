@@ -89,15 +89,12 @@ jobs:
         run: snyk-to-html -i results.json -o results.html
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-          
-      - name: Archive Snyk Results
-        run: tar -czvf results.tar.gz results.html
       
       - name: Upload Snyk Results Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: snyk_results.html
-          path: snyk_results.html
+          name: results.html
+          path: results.html
           
   SAST-2:  
       runs-on: ubuntu-latest
