@@ -96,8 +96,8 @@ jobs:
       - name: Upload Snyk Results Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: results
-          path: results.tar.gz
+          name: snyk_results.html
+          path: snyk_results.html
           
   SAST-2:  
       runs-on: ubuntu-latest
