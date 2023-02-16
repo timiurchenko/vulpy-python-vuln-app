@@ -1,5 +1,5 @@
 name: Demo Snyk with Python app
-on: workflow_dispatch
+on: push
 jobs:
 
   build:
@@ -19,7 +19,7 @@ jobs:
         run: |
           source .venv/bin/activate
           pytest --collect-only
-`
+```
   SCA-1:
     runs-on: ubuntu-latest
     steps:
@@ -92,4 +92,4 @@ jobs:
           run: snyk test --code
           env:
             SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-`
+```
