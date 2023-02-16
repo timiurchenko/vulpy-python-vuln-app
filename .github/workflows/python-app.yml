@@ -91,13 +91,13 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
           
       - name: Archive Snyk Results
-        run: tar -czvf snyk_results.tar.gz snyk_results.html
+        run: tar -czvf results.tar.gz results.html
       
       - name: Upload Snyk Results Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: snyk_results
-          path: snyk_results.tar.gz
+          name: results
+          path: results.tar.gz
           
   SAST-2:  
       runs-on: ubuntu-latest
