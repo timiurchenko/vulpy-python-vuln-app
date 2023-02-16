@@ -20,7 +20,29 @@ jobs:
           source .venv/bin/activate
           pytest --collect-only
 
-      
+  SCA-1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+
+      - name: Create virtual environment
+        run: python -m venv snyk-venv
+
+      - name: Activate virtual environment
+        run: source snyk-venv/bin/activate
+
+      - name: Install dependencies
+        run: pip3 install -r requirements.txt
+
+      - name: Install Snyk
+        run: npm install -g snyk
+
+      - name: Run Snyk to check for vulnerabilities
+        run: snyk test
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          
   SCA-2:
     runs-on: ubuntu-latest
     steps:
@@ -39,7 +61,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --severity-threshold=high
+          args: --all-projects
                  
   SAST:
     runs-on: ubuntu-latest
