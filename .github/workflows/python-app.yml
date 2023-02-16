@@ -73,7 +73,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@master    
+        uses: actions/checkout@master   
+      
+      - run: npm install snyk-to-html -g
     
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/python@master
