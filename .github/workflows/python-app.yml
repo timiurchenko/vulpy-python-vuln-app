@@ -82,9 +82,9 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --code --json
+          args: --code --json > results.json
           
-      - run: snyk-to-html -o results.html
+      - run: snyk-to-html -i results.json -o results.html
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
           
