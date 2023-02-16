@@ -82,7 +82,11 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --code --json | snyk-to-html -o results.html
+          args: --code --json
+          
+      - run: snyk-to-html -o results.html
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
           
   SAST-2:  
       runs-on: ubuntu-latest
