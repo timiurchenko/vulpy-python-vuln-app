@@ -14,11 +14,6 @@ jobs:
           pip install -r requirements.txt
           pip install pytest
 
-      - name: Run tests
-        run: |
-          source .venv/bin/activate
-          pytest --collect-only
-
       - name: Generate HTML report
         run: |
           source .venv/bin/activate
@@ -29,7 +24,12 @@ jobs:
         with:
           name: Test results
           path: my_test_results.html
-
+          
+      - name: Run tests
+        run: |
+          source .venv/bin/activate
+          pytest --collect-only
+          
   SCA:
     runs-on: ubuntu-latest
     steps:
