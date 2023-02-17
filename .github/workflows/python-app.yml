@@ -1,7 +1,6 @@
 name: Demo Snyk with Python app
 on: push
 jobs:
-
   build:
     runs-on: ubuntu-latest
     steps:
@@ -19,7 +18,18 @@ jobs:
         run: |
           source .venv/bin/activate
           pytest --collect-only
-      
+
+      - name: Generate HTML report
+        run: |
+          source .venv/bin/activate
+          pytest --html=my_test_results.html
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Test results
+          path: my_test_results.html
+
   SCA:
     runs-on: ubuntu-latest
     steps:
