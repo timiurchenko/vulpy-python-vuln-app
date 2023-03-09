@@ -39,8 +39,8 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --code --severity-threshold=medium
-        continue-on-error: true
+          args: --code --severity-threshold=high
+        #continue-on-error: true
         
       - run: npm install snyk-to-html -g
     
@@ -50,7 +50,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           args: --code --json > results.json
-          continue-on-error: true
+        continue-on-error: true
           
       - name: Convert Snyk Json to html report
         run: snyk-to-html -i results.json -o results.html
