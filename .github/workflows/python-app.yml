@@ -64,6 +64,7 @@ jobs:
           path: results.html
    
    
+
   Container_Test:
     runs-on: ubuntu-latest
     steps:
@@ -110,4 +111,48 @@ jobs:
         with:
           name: container_results.html
           path: container_results.html
+          
+  Container_Test_2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master   
+      
+      - name: Building container
+        run: |
+          docker build . -t juice-python:14.23
+          # docker save -o juice-python.tar juice-python:14.23
+          # docker load -i juice-python.tar
+  
+      - name: checking container
+        run: |
+          docker ps
+          docker inspect juice-python:14.23
+          docker images
+      
+      - name: Install snyk and test
+        run: |
+          npm install snyk
+          snyk auth ${{ secrets.SNYK_TOKEN }}
+          snyk container test juice-python:14.23
 
+      - run: npm install snyk-to-html -g
+    
+      - name: Generating json with results
+        uses: snyk/actions/python@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --container --json > container_results.json
+        continue-on-error: true
+          
+      - name: Convert Snyk Json to html report
+        run: snyk-to-html -i container_results.json -o container_results.html
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      
+      - name: Upload Snyk Results Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: container_results.html
+          path: container_results.html
