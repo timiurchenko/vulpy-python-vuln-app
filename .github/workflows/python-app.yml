@@ -130,12 +130,14 @@ jobs:
           docker inspect juice-python:14.23
           docker images
       
+      - name: Install snyk 
+        run: npm install snyk
+
       - name: Install snyk and test
         run: |
-          npm install snyk
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk container test juice-python:14.23
-
+          
       - run: npm install snyk-to-html -g
     
       - name: Generating json with results
