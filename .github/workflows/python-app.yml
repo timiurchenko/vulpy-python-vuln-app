@@ -131,7 +131,7 @@ jobs:
           docker images
       
       - name: Install snyk 
-        run: npm install snyk
+        run: npm install snyk -g
 
       - name: Install snyk and test
         run: |
