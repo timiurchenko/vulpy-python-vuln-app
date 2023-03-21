@@ -76,13 +76,16 @@ jobs:
           
       - name: Load the Docker image tarball
         run: docker load -i juice-python.tar
+        
+      - name: Run tests on Docker image
+        run: docker run juice-python:14.23 npm test
       
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/python@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --docker juice-python:14.23 
+          args: --container juice-python:14.23 
         continue-on-error: true
         
       - run: npm install snyk-to-html -g
@@ -92,7 +95,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --code --json > container_results.json
+          args: --container --json > container_results.json
         continue-on-error: true
           
       - name: Convert Snyk Json to html report
