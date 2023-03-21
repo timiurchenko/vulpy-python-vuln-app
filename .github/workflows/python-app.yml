@@ -82,7 +82,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --container juice-python:14.23 
+          args: --docker juice-python:14.23 
         continue-on-error: true
         
       - run: npm install snyk-to-html -g
