@@ -131,21 +131,20 @@ jobs:
           docker images
       
       - name: Install snyk 
-        run: npm install snyk -g
-
-      - name: Install snyk and test
+        run: |
+          npm install snyk -g
+          npm install snyk-to-html -g
+          
+      - name: snyk test
         run: |
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk container test juice-python:14.23
-          
-      - run: npm install snyk-to-html -g
-    
-      - name: Generating json with results
-        uses: snyk/actions/python@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --container --json > container_results.json
+        continue-on-error: true
+        
+      - name: running snyk to-html
+        run: |
+          snyk auth ${{ secrets.SNYK_TOKEN }}
+          snyk container test juice-python:14.23 --json > container_results.json
         continue-on-error: true
           
       - name: Convert Snyk Json to html report
