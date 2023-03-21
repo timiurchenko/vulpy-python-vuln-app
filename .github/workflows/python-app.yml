@@ -62,7 +62,8 @@ jobs:
         with:
           name: results.html
           path: results.html
-          
+   
+   
   Container_Test:
     runs-on: ubuntu-latest
     steps:
@@ -86,7 +87,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --container juice-python:14.23 
+          args: --container juice-python:14.23 -d
         continue-on-error: true
         
       - run: npm install snyk-to-html -g
