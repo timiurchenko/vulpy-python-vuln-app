@@ -73,7 +73,10 @@ jobs:
         run: |
           docker build . -t juice-python:14.23
           docker save -o juice-python.tar juice-python:14.23
-          
+      
+      - name: pytest install
+        run: pip install pytest
+        
       - name: Load the Docker image tarball
         run: docker load -i juice-python.tar
         
