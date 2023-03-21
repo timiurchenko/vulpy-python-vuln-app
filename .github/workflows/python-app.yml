@@ -72,13 +72,14 @@ jobs:
       - name: Building container
         run: |
           docker build . -t juice-python:14.23
-          docker save -o juice-python.tar juice-python:14.23
-          docker load -i juice-python.tar
+          # docker save -o juice-python.tar juice-python:14.23
+          # docker load -i juice-python.tar
   
       - name: checking container
         run: |
           docker ps
           docker inspect juice-python:14.23
+          docker images
       
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/python@master
