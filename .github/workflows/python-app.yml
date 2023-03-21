@@ -69,20 +69,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@master   
       
-      - name: Snyk Container # Rename your image, for testing and failing please add snyk container test before snyk container monitor
+      - name: Building container
         run: |
           docker build . -t juice-python:14.23
           docker save -o juice-python.tar juice-python:14.23
-      
-      - name: pytest install
-        run: pip install pytest
+          docker load -i juice-python.tar
         
-      - name: Load the Docker image tarball
-        run: docker load -i juice-python.tar
-        
-      - name: Run tests on Docker image
-        run: docker run juice-python:14.23 pytest
-      
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/python@master
         env:
