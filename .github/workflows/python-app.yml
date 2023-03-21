@@ -78,7 +78,7 @@ jobs:
         run: docker load -i juice-python.tar
         
       - name: Run tests on Docker image
-        run: docker run juice-python:14.23 npm test
+        run: docker run juice-python:14.23 pytest
       
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/python@master
