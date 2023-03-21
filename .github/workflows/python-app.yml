@@ -62,3 +62,42 @@ jobs:
         with:
           name: results.html
           path: results.html
+          
+  Container_Test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master   
+      
+      - name: Snyk Container # Rename your image, for testing and failing please add snyk container test before snyk container monitor
+        run: docker build . -t juice-python:14.23
+      
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/python@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --container juice-python:14.23
+        #continue-on-error: true
+        
+      - run: npm install snyk-to-html -g
+    
+      - name: Generating json with results
+        uses: snyk/actions/python@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --code --json > container_results.json
+        continue-on-error: true
+          
+      - name: Convert Snyk Json to html report
+        run: snyk-to-html -i container_results.json -o container_results.html
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      
+      - name: Upload Snyk Results Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: container_results.html
+          path: container_results.html
+
