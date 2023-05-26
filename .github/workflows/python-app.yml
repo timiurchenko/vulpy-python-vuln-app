@@ -1,5 +1,5 @@
 name: Demo Snyk with Python app
-on: push
+on: workflow_dispatch
 jobs:
           
   SCA:
